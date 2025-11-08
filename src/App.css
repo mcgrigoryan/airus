@@ -174,3 +174,92 @@
   color: #333;
 }
 
+/* Мобильные стили */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  
+  .card {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  
+  .btn {
+    padding: 12px 16px;
+    font-size: 16px; /* Увеличиваем для удобства касания */
+    min-height: 44px; /* Минимальный размер для тапа */
+  }
+  
+  .table {
+    font-size: 14px;
+    display: block;
+    overflow-x: auto;
+  }
+  
+  .table th,
+  .table td {
+    padding: 8px 6px;
+    white-space: nowrap;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 16px;
+    margin: 10px;
+  }
+  
+  .form-group input,
+  .form-group select {
+    padding: 12px;
+    font-size: 16px; /* Предотвращает zoom в iOS */
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 8px;
+  }
+  
+  .card {
+    padding: 12px;
+  }
+  
+  .table {
+    font-size: 12px;
+  }
+  
+  .table th,
+  .table td {
+    padding: 6px 4px;
+  }
+  
+  /* Скрываем второстепенные колонки в таблицах на очень маленьких экранах */
+  .table td:nth-child(4),
+  .table th:nth-child(4),
+  .table td:nth-child(5),
+  .table th:nth-child(5) {
+    display: none;
+  }
+}
+
+/* Особенности для очень высоких экранов */
+@media (max-width: 768px) and (max-height: 500px) {
+  .modal-content {
+    max-height: 80vh;
+  }
+}
+
+/* Портретная ориентация */
+@media (max-width: 768px) and (orientation: portrait) {
+  .container {
+    padding: 8px;
+  }
+}
+
+/* Ландшафтная ориентация на мобильных */
+@media (max-width: 768px) and (orientation: landscape) {
+  .table {
+    font-size: 12px;
+  }
+}
