@@ -1,11 +1,11 @@
 // Сервис для работы с данными
 // Поддерживает два режима: localStorage (по умолчанию) и Firebase
 
-// Выбор режима работы: 'localStorage' или 'firebase'
-const STORAGE_MODE = process.env.REACT_APP_STORAGE_MODE || 'localStorage';
-
 // Импорт localStorage (по умолчанию)
 import localStorageModule from './localStorage';
+
+// Выбор режима работы: 'localStorage' или 'firebase'
+const STORAGE_MODE = process.env.REACT_APP_STORAGE_MODE || 'localStorage';
 
 // По умолчанию используем localStorage
 let storage = localStorageModule.default || localStorageModule;
