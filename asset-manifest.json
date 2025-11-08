@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.css": "/airus/static/css/main.d4e04dce.css",
+    "main.js": "/airus/static/js/main.a1ae5eb0.js",
+    "static/js/635.d7dc36a3.chunk.js": "/airus/static/js/635.d7dc36a3.chunk.js",
+    "static/js/238.c5090897.chunk.js": "/airus/static/js/238.c5090897.chunk.js",
+    "static/js/440.cd78548e.chunk.js": "/airus/static/js/440.cd78548e.chunk.js",
+    "index.html": "/airus/index.html",
+    "main.d4e04dce.css.map": "/airus/static/css/main.d4e04dce.css.map",
+    "main.a1ae5eb0.js.map": "/airus/static/js/main.a1ae5eb0.js.map",
+    "635.d7dc36a3.chunk.js.map": "/airus/static/js/635.d7dc36a3.chunk.js.map",
+    "238.c5090897.chunk.js.map": "/airus/static/js/238.c5090897.chunk.js.map",
+    "440.cd78548e.chunk.js.map": "/airus/static/js/440.cd78548e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d4e04dce.css",
+    "static/js/main.a1ae5eb0.js"
+  ]
+}
