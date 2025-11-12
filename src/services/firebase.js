@@ -1,10 +1,7 @@
-// Firebase конфигурация
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
-// Конфигурация Firebase
-// ВАЖНО: Замените эти значения на ваши из Firebase Console
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY || "YOUR_API_KEY",
   authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN || "YOUR_AUTH_DOMAIN",
@@ -14,7 +11,6 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_APP_ID || "YOUR_APP_ID"
 };
 
-// Инициализация Firebase только если конфигурация валидна
 let app, db, auth;
 
 try {

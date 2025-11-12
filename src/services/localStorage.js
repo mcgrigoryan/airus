@@ -1,6 +1,3 @@
-// Сервис для работы с localStorage
-
-// Ключи для хранения данных
 const STORAGE_KEYS = {
   USERS: 'airus_users',
   PRODUCTS: 'airus_products',
@@ -9,9 +6,7 @@ const STORAGE_KEYS = {
   CURRENT_USER: 'airus_current_user'
 };
 
-// Инициализация данных по умолчанию
 const initDefaultData = () => {
-  // Пользователи по умолчанию
   const defaultUsers = [
     { id: 1, username: 'director', password: 'director123', role: 'director' },
     { id: 2, username: 'manager', password: 'manager123', role: 'manager' },
@@ -35,18 +30,15 @@ const initDefaultData = () => {
   }
 };
 
-// Получить данные из localStorage
 const getData = (key) => {
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : null;
 };
 
-// Сохранить данные в localStorage
 const setData = (key, data) => {
   localStorage.setItem(key, JSON.stringify(data));
 };
 
-// Авторизация
 const login = (username, password) => {
   initDefaultData();
 
@@ -73,17 +65,14 @@ const login = (username, password) => {
   return { success: false, error: 'Неверный логин или пароль' };
 };
 
-// Выход
 const logout = () => {
   localStorage.removeItem(STORAGE_KEYS.CURRENT_USER);
 };
 
-// Получить текущего пользователя
 const getCurrentUser = () => {
   return getData(STORAGE_KEYS.CURRENT_USER);
 };
 
-// Товары
 const getProducts = () => {
   initDefaultData();
   return getData(STORAGE_KEYS.PRODUCTS) || [];
@@ -134,7 +123,6 @@ const deleteProduct = (id) => {
   return true;
 };
 
-// Операции
 const getOperations = () => {
   initDefaultData();
   const operations = getData(STORAGE_KEYS.OPERATIONS) || [];
@@ -163,7 +151,6 @@ const createOperation = (operationData) => {
     return { success: false, error: 'Товар не найден или неактивен' };
   }
   
-  // Проверка остатка для продажи
   if (operationData.type === 'Продажа' && product.stock < operationData.quantity) {
     return { success: false, error: 'Недостаточно товара на складе' };
   }
@@ -178,7 +165,6 @@ const createOperation = (operationData) => {
   operations.push(newOperation);
   setData(STORAGE_KEYS.OPERATIONS, operations);
   
-  // Обновить остаток товара
   let newStock = product.stock;
   if (operationData.type === 'Производство' || operationData.type === 'Закупка') {
     newStock += operationData.quantity;
@@ -191,7 +177,6 @@ const createOperation = (operationData) => {
   return { success: true, operation: newOperation, newStock };
 };
 
-// Отчеты
 const getReports = (userRole) => {
   initDefaultData();
   const reports = getData(STORAGE_KEYS.REPORTS) || [];
@@ -292,7 +277,6 @@ const generateReport = (month, year, userId) => {
   return { ...newReport, data: reportData };
 };
 
-// Зарплаты
 const getSalaries = () => {
   return [
     { position: 'Директор', salary: 80000 },
@@ -303,7 +287,6 @@ const getSalaries = () => {
   ];
 };
 
-// Аналитика
 const getSalesAnalytics = (year) => {
   initDefaultData();
   const reports = getData(STORAGE_KEYS.REPORTS) || [];

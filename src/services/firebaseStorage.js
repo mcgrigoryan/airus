@@ -1,4 +1,3 @@
-// Сервис для работы с Firebase Firestore
 import { 
   collection, 
   doc, 
@@ -13,12 +12,10 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 
-// Проверка наличия db
 if (!db) {
   console.error('Firebase не инициализирован. Проверьте конфигурацию в firebase.js');
 }
 
-// Коллекции в Firestore
 const COLLECTIONS = {
   USERS: 'users',
   PRODUCTS: 'products',
@@ -26,14 +23,11 @@ const COLLECTIONS = {
   REPORTS: 'reports'
 };
 
-// Инициализация данных по умолчанию
 export const initDefaultData = async () => {
   try {
-    // Проверяем, есть ли пользователи
     const usersSnapshot = await getDocs(collection(db, COLLECTIONS.USERS));
     
     if (usersSnapshot.empty) {
-      // Создаем пользователей по умолчанию
       const defaultUsers = [
         { username: 'director', password: 'director123', role: 'director' },
         { username: 'manager', password: 'manager123', role: 'manager' },
@@ -49,7 +43,6 @@ export const initDefaultData = async () => {
   }
 };
 
-// Авторизация
 export const login = async (username, password) => {
   try {
     const usersSnapshot = await getDocs(
@@ -69,7 +62,6 @@ export const login = async (username, password) => {
 
     const { password: _, ...userWithoutPassword } = user;
     
-    // Сохраняем текущего пользователя в localStorage для быстрого доступа
     localStorage.setItem('airus_current_user', JSON.stringify(userWithoutPassword));
 
     return { success: true, user: userWithoutPassword };
@@ -79,18 +71,15 @@ export const login = async (username, password) => {
   }
 };
 
-// Выход
 export const logout = () => {
   localStorage.removeItem('airus_current_user');
 };
 
-// Получить текущего пользователя
 export const getCurrentUser = () => {
   const userStr = localStorage.getItem('airus_current_user');
   return userStr ? JSON.parse(userStr) : null;
 };
 
-// Товары
 export const getProducts = async () => {
   try {
     const snapshot = await getDocs(
@@ -159,7 +148,6 @@ export const deleteProduct = async (id) => {
   }
 };
 
-// Операции
 export const getOperations = async () => {
   try {
     const snapshot = await getDocs(
@@ -207,7 +195,6 @@ export const createOperation = async (operationData) => {
 
     const docRef = await addDoc(collection(db, COLLECTIONS.OPERATIONS), newOperation);
 
-    // Обновить остаток товара
     let newStock = product.stock;
     if (operationData.type === 'Производство' || operationData.type === 'Закупка') {
       newStock += operationData.quantity;
@@ -228,7 +215,6 @@ export const createOperation = async (operationData) => {
   }
 };
 
-// Отчеты
 export const getReports = async (userRole) => {
   try {
     const currentUser = getCurrentUser();
@@ -347,7 +333,6 @@ export const generateReport = async (month, year, userId) => {
   }
 };
 
-// Зарплаты
 export const getSalaries = () => {
   return [
     { position: 'Директор', salary: 80000 },
@@ -358,7 +343,6 @@ export const getSalaries = () => {
   ];
 };
 
-// Аналитика
 export const getSalesAnalytics = async (year) => {
   try {
     const snapshot = await getDocs(

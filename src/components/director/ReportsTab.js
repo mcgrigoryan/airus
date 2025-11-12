@@ -30,11 +30,7 @@ function ReportsTab() {
     try {
       const response = await api.get(`/reports/${reportId}/export/excel`);
       const report = response.data;
-      
-      // Импорт xlsx для экспорта
       const XLSX = await import('xlsx');
-      
-      // Подготовка данных для Excel
       const wsData = [
         ['Наименование', 'Категория', 'Произведено', 'Закуплено', 'Продано', 'Остаток', 'Прибыль', 'Убытки']
       ];
@@ -58,8 +54,6 @@ function ReportsTab() {
       const ws = XLSX.utils.aoa_to_sheet(wsData);
       const wb = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(wb, ws, 'Отчет');
-
-      // Экспорт в файл
       XLSX.writeFile(wb, `report_${report.year}_${String(report.month).padStart(2, '0')}.xlsx`);
     } catch (err) {
       setError('Ошибка при экспорте в Excel');

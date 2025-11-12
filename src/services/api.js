@@ -1,13 +1,9 @@
-// API сервис для работы с localStorage
 import storage from './storage';
 
-// Симуляция API для совместимости с существующим кодом
 const api = {
-  // Авторизация
   post: async (url, data) => {
     if (url === '/auth/login') {
       const { username, password } = data;
-      // Инициализируем данные перед логином
       storage.initDefaultData();
       const result = await Promise.resolve(storage.login(username, password));
       if (result.success) {
@@ -15,8 +11,7 @@ const api = {
       }
       throw { response: { data: { error: result.error } } };
     }
-    
-    // Операции
+
     if (url === '/operations') {
       const result = await Promise.resolve(storage.createOperation(data));
       if (result.success) {
@@ -24,14 +19,12 @@ const api = {
       }
       throw { response: { data: { error: result.error } } };
     }
-    
-    // Товары
+
     if (url === '/products') {
       const product = storage.createProduct(data);
       return { data: product };
     }
-    
-    // Отчеты
+
     if (url === '/reports/generate') {
       const user = storage.getCurrentUser();
       const report = storage.generateReport(data.month, data.year, user.id);
@@ -42,7 +35,6 @@ const api = {
   },
   
   get: async (url) => {
-    // Товары
     if (url === '/products') {
       const products = await Promise.resolve(storage.getProducts());
       return { data: products.filter(p => p.is_active) };
@@ -56,14 +48,12 @@ const api = {
       }
       return { data: product };
     }
-    
-    // Операции
+
     if (url === '/operations') {
       const operations = await Promise.resolve(storage.getOperations());
       return { data: operations };
     }
-    
-    // Отчеты
+
     if (url === '/reports') {
       const user = storage.getCurrentUser();
       const reports = await Promise.resolve(storage.getReports(user.role));
@@ -87,11 +77,9 @@ const api = {
       if (!report) {
         throw { response: { status: 404, data: { error: 'Отчет не найден' } } };
       }
-      // Экспорт в Excel будет обработан в компоненте
       return { data: report };
     }
-    
-    // Зарплаты
+
     if (url === '/salaries') {
       const salaries = storage.getSalaries();
       return { data: salaries };
@@ -109,8 +97,7 @@ const api = {
       txtContent += `ИТОГО: ${total.toLocaleString('ru-RU')} руб.\n`;
       return { data: txtContent };
     }
-    
-    // Аналитика
+
     if (url.startsWith('/analytics/sales')) {
       const params = new URLSearchParams(url.split('?')[1]);
       const year = params.get('year') || new Date().getFullYear();
