@@ -42,14 +42,6 @@ const setData = (key, data) => {
 const login = (username, password) => {
   initDefaultData();
 
-  const activeSession = getCurrentUser();
-  if (activeSession) {
-    return {
-      success: false,
-      error: `Пользователь "${activeSession.username}" уже авторизован. Выполните выход, чтобы войти под другой учетной записью.`
-    };
-  }
-
   const trimmedUsername = username.trim();
   const users = getData(STORAGE_KEYS.USERS);
   const user = users.find(
