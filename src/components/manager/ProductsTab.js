@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import api from '../../services/api';
 import ProductModal from './ProductModal';
 
@@ -8,6 +8,9 @@ function ProductsTab() {
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [error, setError] = useState('');
+  const [info, setInfo] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('all');
 
   useEffect(() => {
     fetchProducts();
@@ -17,6 +20,7 @@ function ProductsTab() {
     try {
       const response = await api.get('/products');
       setProducts(response.data);
+      setError('');
     } catch (err) {
       setError(err.response?.data?.error || 'Ошибка при загрузке товаров');
     } finally {
@@ -27,6 +31,7 @@ function ProductsTab() {
   const handleAdd = () => {
     setEditingProduct(null);
     setShowModal(true);
+    setInfo('');
   };
 
   const handleEdit = (product) => {
@@ -42,6 +47,7 @@ function ProductsTab() {
     try {
       await api.delete(`/products/${id}`);
       fetchProducts();
+      setInfo('Товар переведен в статус «неактивный». Он больше не доступен для операций.');
     } catch (err) {
       setError(err.response?.data?.error || 'Ошибка при удалении товара');
     }
@@ -53,9 +59,33 @@ function ProductsTab() {
   };
 
   const handleModalSave = () => {
+    const wasEditing = Boolean(editingProduct);
     fetchProducts();
+    setInfo(
+      wasEditing
+        ? 'Данные товара успешно обновлены.'
+        : 'Новый товар успешно добавлен в справочник.'
+    );
     handleModalClose();
   };
+
+  const resetFilters = () => {
+    setSearchTerm('');
+    setCategoryFilter('all');
+  };
+
+  const filteredProducts = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+
+    return products.filter((product) => {
+      const matchesSearch = term
+        ? product.name.toLowerCase().includes(term)
+        : true;
+      const matchesCategory =
+        categoryFilter === 'all' || product.category === categoryFilter;
+      return matchesSearch && matchesCategory;
+    });
+  }, [products, searchTerm, categoryFilter]);
 
   if (loading) {
     return <div>Загрузка...</div>;
@@ -71,6 +101,39 @@ function ProductsTab() {
       </div>
 
       {error && <div className="alert alert-error">{error}</div>}
+      {info && <div className="alert alert-success">{info}</div>}
+
+      <div className="card" style={{ marginBottom: '20px' }}>
+        <div className="filters-grid">
+          <div className="form-group inline-form-group">
+            <label htmlFor="product-search">Поиск по наименованию</label>
+            <input
+              id="product-search"
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Введите название товара"
+            />
+          </div>
+          <div className="form-group inline-form-group">
+            <label htmlFor="product-category">Категория</label>
+            <select
+              id="product-category"
+              value={categoryFilter}
+              onChange={(e) => setCategoryFilter(e.target.value)}
+            >
+              <option value="all">Все категории</option>
+              <option value="Для дома">Для дома</option>
+              <option value="Для автомобиля">Для автомобиля</option>
+            </select>
+          </div>
+          <div className="filters-actions">
+            <button className="btn btn-secondary" onClick={resetFilters}>
+              Сбросить фильтры
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div className="card">
         <table className="table">
@@ -85,14 +148,16 @@ function ProductsTab() {
             </tr>
           </thead>
           <tbody>
-            {products.length === 0 ? (
+            {filteredProducts.length === 0 ? (
               <tr>
                 <td colSpan="6" style={{ textAlign: 'center' }}>
-                  Нет товаров
+                  {products.length === 0
+                    ? 'Нет товаров'
+                    : 'По заданным условиям фильтрации товары не найдены'}
                 </td>
               </tr>
             ) : (
-              products.map((product) => (
+              filteredProducts.map((product) => (
                 <tr key={product.id}>
                   <td>{product.name}</td>
                   <td>{product.category}</td>

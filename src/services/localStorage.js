@@ -49,15 +49,27 @@ const setData = (key, data) => {
 // Авторизация
 const login = (username, password) => {
   initDefaultData();
+
+  const activeSession = getCurrentUser();
+  if (activeSession) {
+    return {
+      success: false,
+      error: `Пользователь "${activeSession.username}" уже авторизован. Выполните выход, чтобы войти под другой учетной записью.`
+    };
+  }
+
+  const trimmedUsername = username.trim();
   const users = getData(STORAGE_KEYS.USERS);
-  const user = users.find(u => u.username === username && u.password === password);
-  
+  const user = users.find(
+    (u) => u.username === trimmedUsername && u.password === password
+  );
+
   if (user) {
     const { password: _, ...userWithoutPassword } = user;
     setData(STORAGE_KEYS.CURRENT_USER, userWithoutPassword);
     return { success: true, user: userWithoutPassword };
   }
-  
+
   return { success: false, error: 'Неверный логин или пароль' };
 };
 

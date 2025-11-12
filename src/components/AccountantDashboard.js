@@ -18,7 +18,7 @@ function AccountantDashboard() {
 
   const handleLogout = () => {
     storage.logout();
-    navigate('/login');
+    navigate('/login', { replace: true });
   };
 
   return (

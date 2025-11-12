@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import storage from '../services/storage';
 import './Login.css';
 
 function Login() {
@@ -15,16 +16,36 @@ function Login() {
     setError('');
     setLoading(true);
 
+    storage.initDefaultData();
+
+    const preparedUsername = username.trim();
+    const preparedPassword = password.trim();
+
+    if (!preparedUsername || !preparedPassword) {
+      setError('Введите логин и пароль без лишних пробелов.');
+      setLoading(false);
+      return;
+    }
+
+    if (preparedPassword.length < 6) {
+      setError('Пароль должен содержать минимум 6 символов.');
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await api.post('/auth/login', { username, password });
-      // Redirect based on role
+      const response = await api.post('/auth/login', {
+        username: preparedUsername,
+        password: preparedPassword
+      });
+
       const role = response.data.user.role;
       if (role === 'manager') {
-        navigate('/manager');
+        navigate('/manager', { replace: true });
       } else if (role === 'accountant') {
-        navigate('/accountant');
+        navigate('/accountant', { replace: true });
       } else if (role === 'director') {
-        navigate('/director');
+        navigate('/director', { replace: true });
       }
     } catch (err) {
       setError(err.response?.data?.error || 'Ошибка при входе в систему');
@@ -38,7 +59,7 @@ function Login() {
       <div className="login-card">
         <h1>ООО «Айрус»</h1>
         <h2>Система управления</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           {error && <div className="alert alert-error">{error}</div>}
           <div className="form-group">
             <label htmlFor="username">Логин</label>

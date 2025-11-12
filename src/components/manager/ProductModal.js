@@ -28,10 +28,31 @@ function ProductModal({ product, onClose, onSave }) {
     setLoading(true);
 
     try {
+      const trimmedName = formData.name.trim();
+      if (!trimmedName) {
+        throw new Error('Наименование обязательно для заполнения.');
+      }
+
+      const costPrice = parseFloat(formData.cost_price);
+      const sellingPrice = parseFloat(formData.selling_price);
+
+      if (!Number.isFinite(costPrice) || costPrice <= 0) {
+        throw new Error('Себестоимость должна быть больше нуля.');
+      }
+
+      if (!Number.isFinite(sellingPrice) || sellingPrice <= 0) {
+        throw new Error('Цена продажи должна быть больше нуля.');
+      }
+
+      if (sellingPrice <= costPrice) {
+        throw new Error('Цена продажи должна превышать себестоимость.');
+      }
+
       const data = {
-        ...formData,
-        cost_price: parseFloat(formData.cost_price),
-        selling_price: parseFloat(formData.selling_price)
+        name: trimmedName,
+        category: formData.category,
+        cost_price: costPrice,
+        selling_price: sellingPrice
       };
 
       if (product) {
@@ -41,7 +62,11 @@ function ProductModal({ product, onClose, onSave }) {
       }
       onSave();
     } catch (err) {
-      setError(err.response?.data?.error || 'Ошибка при сохранении товара');
+      const message =
+        err.response?.data?.error ||
+        err.message ||
+        'Ошибка при сохранении товара';
+      setError(message);
     } finally {
       setLoading(false);
     }

@@ -31,16 +31,39 @@ function OperationModal({ onClose, onSave }) {
     setLoading(true);
 
     try {
+      if (!formData.product_id) {
+        throw new Error('Выберите товар для проведения операции.');
+      }
+
+      const quantity = parseInt(formData.quantity, 10);
+      if (!Number.isInteger(quantity) || quantity <= 0) {
+        throw new Error('Количество должно быть положительным целым числом.');
+      }
+
+      if (!formData.operation_date) {
+        throw new Error('Укажите дату операции.');
+      }
+
       const data = {
         ...formData,
         product_id: parseInt(formData.product_id),
-        quantity: parseInt(formData.quantity)
+        quantity
       };
 
       await api.post('/operations', data);
+      setFormData({
+        type: 'Производство',
+        product_id: '',
+        quantity: '',
+        operation_date: new Date().toISOString().split('T')[0]
+      });
       onSave();
     } catch (err) {
-      setError(err.response?.data?.error || 'Ошибка при создании операции');
+      const message =
+        err.response?.data?.error ||
+        err.message ||
+        'Ошибка при создании операции';
+      setError(message);
     } finally {
       setLoading(false);
     }
