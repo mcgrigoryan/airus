@@ -1,19 +1,19 @@
 {
   "files": {
     "main.css": "/airus/static/css/main.a80f398d.css",
-    "main.js": "/airus/static/js/main.f1983b64.js",
+    "main.js": "/airus/static/js/main.cb06928b.js",
     "static/js/635.d7dc36a3.chunk.js": "/airus/static/js/635.d7dc36a3.chunk.js",
     "static/js/238.c5090897.chunk.js": "/airus/static/js/238.c5090897.chunk.js",
     "static/js/440.cd78548e.chunk.js": "/airus/static/js/440.cd78548e.chunk.js",
     "index.html": "/airus/index.html",
     "main.a80f398d.css.map": "/airus/static/css/main.a80f398d.css.map",
-    "main.f1983b64.js.map": "/airus/static/js/main.f1983b64.js.map",
+    "main.cb06928b.js.map": "/airus/static/js/main.cb06928b.js.map",
     "635.d7dc36a3.chunk.js.map": "/airus/static/js/635.d7dc36a3.chunk.js.map",
     "238.c5090897.chunk.js.map": "/airus/static/js/238.c5090897.chunk.js.map",
     "440.cd78548e.chunk.js.map": "/airus/static/js/440.cd78548e.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a80f398d.css",
-    "static/js/main.f1983b64.js"
+    "static/js/main.cb06928b.js"
   ]
 }
