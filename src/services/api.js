@@ -128,7 +128,7 @@ const api = {
       if (!success) {
         throw { response: { status: 404, data: { error: 'Товар не найден' } } };
       }
-      return { data: { message: 'Товар успешно удален' } };
+      return { data: {} };
     }
     
     throw { response: { status: 404, data: { error: 'Not found' } } };
