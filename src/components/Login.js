@@ -13,6 +13,7 @@ function Login() {
 
   useEffect(() => {
     storage.logout();
+    localStorage.removeItem('airus_current_user');
   }, []);
 
   const handleSubmit = async (e) => {
