@@ -8,7 +8,6 @@ function ProductsTab() {
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [error, setError] = useState('');
-  const [info, setInfo] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState('all');
 
@@ -31,7 +30,6 @@ function ProductsTab() {
   const handleAdd = () => {
     setEditingProduct(null);
     setShowModal(true);
-    setInfo('');
   };
 
   const handleEdit = (product) => {
@@ -47,7 +45,6 @@ function ProductsTab() {
     try {
       await api.delete(`/products/${id}`);
       fetchProducts();
-      setInfo('Товар переведен в статус «неактивный». Он больше не доступен для операций.');
     } catch (err) {
       setError(err.response?.data?.error || 'Ошибка при удалении товара');
     }
@@ -59,13 +56,7 @@ function ProductsTab() {
   };
 
   const handleModalSave = () => {
-    const wasEditing = Boolean(editingProduct);
     fetchProducts();
-    setInfo(
-      wasEditing
-        ? 'Данные товара успешно обновлены.'
-        : 'Новый товар успешно добавлен в справочник.'
-    );
     handleModalClose();
   };
 
@@ -101,7 +92,6 @@ function ProductsTab() {
       </div>
 
       {error && <div className="alert alert-error">{error}</div>}
-      {info && <div className="alert alert-success">{info}</div>}
 
       <div className="card" style={{ marginBottom: '20px' }}>
         <div className="filters-grid">

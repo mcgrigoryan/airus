@@ -7,7 +7,6 @@ function OperationsTab() {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState('');
-  const [info, setInfo] = useState('');
   const [typeFilter, setTypeFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [dateFrom, setDateFrom] = useState('');
@@ -39,7 +38,6 @@ function OperationsTab() {
 
   const handleModalSave = () => {
     fetchOperations();
-    setInfo('Операция успешно зарегистрирована.');
     handleModalClose();
   };
 
@@ -96,7 +94,6 @@ function OperationsTab() {
       </div>
 
       {error && <div className="alert alert-error">{error}</div>}
-      {info && <div className="alert alert-success">{info}</div>}
 
       <div className="stats-grid">
         <div className="stat-card">
